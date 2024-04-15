@@ -30,16 +30,8 @@ function App() {
       <Route path="/" element={ <><PageTitle title="Signin " /><SignIn /></> }/>
       <Route path="/home" element={  <><PageTitle title="Home " /><ECommerce /></>}/>
       <Route path="/invoiceform" element={  <><PageTitle title="Create Invoice" /><FormLayout /></>}/>
-     <Route  path="/tables"  element={ <><PageTitle title="Manage Invoice " /><Tables /></>}/> 
-      <Route path="/settings" element={  <><PageTitle title="Settings " /><Settings /></>}/>
-       
-        
-         
-     
-        
-     
-   
-       
+      <Route  path="/tables"  element={ <><PageTitle title="Manage Invoice " /><Tables /></>}/> 
+      <Route path="/settings" element={  <><PageTitle title="Settings " /><Settings /></>}/>       
       </Routes>
     </>
   );
