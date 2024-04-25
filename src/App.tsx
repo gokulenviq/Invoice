@@ -26,6 +26,7 @@ function App() {
     <Loader />
   ) : (
     <>
+
       <Routes>
       <Route path="/" element={ <><PageTitle title="Signin " /><SignIn /></> }/>
       <Route path="/home" element={  <><PageTitle title="Home " /><ECommerce /></>}/>

@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
+import axios from 'axios';
 
 const FormLayout = () => {
-  const [rows, setRows] = useState([{ description: '', total: '' }]);
+  const [rows, setRows] = useState([{ description: '', amount: '' }]);
   const [successMessage, setSuccessMessage] = useState('');
 
   const addRow = () => {
-    setRows([...rows, { description: '', total: '' }]);
+    setRows([...rows, { description: '', amount: '' }]);
   };
 
   const handleInputChange = (index, event) => {
@@ -17,21 +18,44 @@ const FormLayout = () => {
     setRows(newRows);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Form Values:', {
-      invoiceNo: event.target.invoiceNo.value,
-      date: event.target.date.value,
-      clientName: event.target.clientName.value,
-      clientAddress: event.target.clientAddress.value,
-      website: event.target.website.value,
-      items: rows
-    });
-    setSuccessMessage('Form submitted successfully!');
-    // Clear input fields
-    event.target.reset();
-    setRows([{ description: '', total: '' }]);
-  };
+    try {
+      const formData = {
+        invoiceNo: event.target.invoiceNo.value,
+        date: event.target.date.value,
+        clientName: event.target.clientName.value,
+        clientAddress: event.target.clientAddress.value,
+        website: event.target.website.value,
+        status: event.target.status.value,
+        items: rows
+      };
+  
+      // Calculate total by summing up all item amounts
+      let total = 0;
+      rows.forEach(row => {
+        total += parseFloat(row.amount);
+      });
+  
+      // Format total amount with Indian numbering system
+      const formattedTotal = total.toLocaleString('en-IN');
+  
+      formData.total = formattedTotal;
+  
+      // Make POST request to backend API
+      console.log(formData)
+      const response = await axios.post('http://localhost:3000/api/invoices', formData);
+  
+      console.log('Response:', response.data);
+      setSuccessMessage('Form submitted successfully!');
+      
+      // Clear input fields
+      event.target.reset();
+      setRows([{ description: '', amount: '' }]);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
+  }
 
   return (
     <DefaultLayout>
@@ -110,6 +134,20 @@ const FormLayout = () => {
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
+                <div className="mb-4.5">
+                  <label className="mb-2.5 block text-black dark:text-white">
+                    Client status
+                  </label>
+                  <select
+                    name="status"
+                    required
+                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  >
+                    <option value="paid">Paid</option>
+                    <option value="unpaid">Unpaid</option>
+                  </select>
+                </div>
+
                 <div className="grid grid-cols-1 mb-5 gap-9 sm:grid-cols-1">
                   <div className="flex flex-col gap-9">
                     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -136,13 +174,13 @@ const FormLayout = () => {
                             </div>
                             <div className="mb-4.5">
                               <label className="mb-2.5 block text-black dark:text-white">
-                                Total
+                                Amount
                               </label>
                               <input
                                 type="text"
-                                name="total"
+                                name="amount"
                                 required
-                                value={row.total}
+                                value={row.amount}
                                 onChange={(e) => handleInputChange(index, e)}
                                 className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                               />

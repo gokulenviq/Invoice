@@ -11,6 +11,7 @@ const Tables = () => {
        
         <TableThree />
       </div>
+    
     </DefaultLayout>
   );
 };
