@@ -11,10 +11,11 @@ interface InvoicePdfProps {
   website:string;
   clientAddress:string;
   status:string;
-  items:string;
+  items:string
   paidDate:string
-
 }
+
+
 
 
 const styles = StyleSheet.create({
@@ -22,6 +23,7 @@ const styles = StyleSheet.create({
   page: {
     color: 'black',
     width: '100%', // Set the width to 100%
+    fontFamily:'Arial, Helvetica, sans-serif'
   },
   section: {
     margin: 10,
@@ -50,7 +52,7 @@ const styles = StyleSheet.create({
   },
   center:{
     paddingBottom:15,
-    paddingTop:0,
+    paddingTop:15,
     marginRight:10
 
   },
@@ -72,7 +74,7 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     paddingLeft: 20,
     paddingBottom:17,
-    paddingTop:0
+    paddingTop:20
  
   },
   descriptionTotalContainerdiv:{
@@ -89,7 +91,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'flex-end',
     paddingBottom:20,
-    paddingTop:0
+    paddingTop:20
   },
   amount: {
     marginLeft: 50
@@ -108,20 +110,22 @@ const styles = StyleSheet.create({
 
 
 
-const InvoicePdf: React.FC<InvoicePdfProps> = ({ invoiceNo,paidDate,website,items, clientName ,total,status,clientAddress ,date }) => {
-  const parsedItems = JSON.parse(items);
 
+const InvoicePdf: React.FC<InvoicePdfProps> = ({ invoiceNo,website,paidDate,items, clientName ,total,status,clientAddress ,date }) => {
+  const parsedItems = JSON.parse(items);
   const pdfDate = paidDate || date;
+ 
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.section}>
-        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start' }}>
+        <View>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start' }}>
   {/* Image */}
-  <img style={styles.image} src={img} />
+  <img style={styles.image} src={img} alt="Logo" />
 
   {/* Status */}
-  <div style={{ textAlign: 'center', marginLeft: '125px',alignItems: 'flex-end' }}>
+  <div style={{ marginLeft: 'auto', textAlign: 'center', alignItems: 'flex-end' }}>
     <div style={{
       backgroundColor: status === 'paid' ? '#4CAF50' : status === 'unpaid' ? '#DC2727' : '#DC2727',
       borderColor: status === 'paid' ? '#2AA22E' : status === 'unpaid' ? '#A40000' : '#A40000',
@@ -136,9 +140,11 @@ const InvoicePdf: React.FC<InvoicePdfProps> = ({ invoiceNo,paidDate,website,item
       <b>{status.toUpperCase()}</b>
     </div>
   </div>
+</div>
+
 </View>
           <Text style={styles.address}>
-            
+            <br />
             <b style={{ fontSize: 15 }}> ENVIQ TECH</b>
            <ul>  GN Mills post, Thudiyalur, Coimbatore – 641029</ul>
           <ul>Tamil Nadu</ul>

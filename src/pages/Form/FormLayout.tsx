@@ -30,25 +30,25 @@ const FormLayout = () => {
         status: event.target.status.value,
         items: rows
       };
-  
+
       // Calculate total by summing up all item amounts
       let total = 0;
       rows.forEach(row => {
         total += parseFloat(row.amount);
       });
-  
+
       // Format total amount with Indian numbering system
       const formattedTotal = total.toLocaleString('en-IN');
-  
+
       formData.total = formattedTotal;
-  
+
       // Make POST request to backend API
-      console.log(formData)
+
       const response = await axios.post('http://localhost:3000/api/invoices', formData);
-  
-      console.log('Response:', response.data);
+
+
       setSuccessMessage('Form submitted successfully!');
-      
+
       // Clear input fields
       event.target.reset();
       setRows([{ description: '', amount: '' }]);
@@ -209,7 +209,7 @@ const FormLayout = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Show success message */}
       {successMessage && (
         <div className="fixed top-0 right-0 m-5 bg-green-500 text-white p-3 rounded-md">

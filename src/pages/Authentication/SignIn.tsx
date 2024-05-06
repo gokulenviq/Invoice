@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // Import axios for making HTTP requests
-
-
+import axios from 'axios';
 import 'tailwindcss/tailwind.css';
 import { FaUser, FaLock } from 'react-icons/fa';
 import logo from "../../Image/Enviq-Tech-solution-Logo-white.png";
@@ -19,7 +17,6 @@ const LoginPage: React.FC = () => {
   });
 
   const [loginError, setLoginError] = useState('');
-  
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -31,7 +28,6 @@ const LoginPage: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   
-    // Validation logic
     const errors: { [key: string]: string } = {};
     if (formData.username.trim() === '') {
       errors.username = 'Username is required';
@@ -45,8 +41,8 @@ const LoginPage: React.FC = () => {
     } else {
       try {
         const response = await axios.post('http://localhost:3000/api/login', formData);
-        console.log(response.data);
-        // Assuming successful login, navigate to '/home'
+        const token = response.data.token; // Assuming the token is returned from backend
+        localStorage.setItem('token', token); // Store token in localStorage
         window.location.href = '/home';
       } catch (error) {
         setLoginError('Invalid Login');
@@ -75,7 +71,6 @@ const LoginPage: React.FC = () => {
               <input id="password" name="password" type="password" required className="appearance-none rounded-full relative block w-full pl-12 pr-3 py-4 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Password" value={formData.password} onChange={handleInputChange} />
               <FaLock className="absolute top-1/2 transform -translate-y-1/2 left-4 text-gray-500" />
               {formErrors.password && <p className="text-red-500 mt-1">{formErrors.password}</p>}
-              
             </div>
           </div>
 
@@ -84,8 +79,7 @@ const LoginPage: React.FC = () => {
               Login
             </button>
             <div className='mr-10'>
-            {loginError && <p className="text-white mt-9 m-20 text-center bg-red-500">{loginError}</p>}
-
+              {loginError && <p className="text-white mt-9 m-20 text-center bg-red-500">{loginError}</p>}
             </div>
           </div>
         </form> 

@@ -15,11 +15,12 @@ model Invoice {
   id            Int       @id @default(autoincrement())
   invoiceNo     String    @unique // Unique invoice number
   date          DateTime  // Date of the invoice
+  paidDate      DateTime? // Paid Date of the invoice, allowing null values
   clientName    String    // Name of the client
   clientAddress String    // Address of the client
   website       String?   // Website of the client (optional)
   items         Json      // JSON object to store item details
-  total         String   // Total amount of the invoice as String
+  total         String    // Total amount of the invoice as String
   status        String    // Status of the invoice
 }
 
